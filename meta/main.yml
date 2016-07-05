@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Lukas Pustina
+  description: Installs Hubot with Bosun Integration
+  company: Rheinwerk
+  license: license (GPLv3)
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  galaxy_tags:
+    - bosun
+    - hubot
+    - system
+dependencies:
+  - { role: angstwad.docker_ubuntu, docker_pkg_name: "{{ _docker_install.docker_pkg_name }}", update_docker_package: "{{ _docker_install.update_docker_package }}", docker_opts: "{{ _docker_install.docker_opts }}" }
+

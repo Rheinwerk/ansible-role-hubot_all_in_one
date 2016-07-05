@@ -1,0 +1,28 @@
+---
+_docker_install:
+  update_docker_package: "{{ RW_APT_CACHE_UPDATE|default('no') }}"
+  docker_pkg_name: docker-engine
+  docker_opts:
+
+_hubot:
+  use_default_config: yes
+  instance: hubot
+  version: latest
+  data_directories:
+    base: /opt/hubot
+    data: data
+    data_redis: data/redis
+    docker: hubot
+  hubot:
+    env:
+      HUBOT_AUTH_ROLES: "admin=id_of_admin_user1,id_of_admin_user2 bosun=id_of_admin_user1,id_of_admin_user2"
+      HUBOT_BOSUN_HOST: "http://bosun:8070"
+      HUBOT_BOSUN_ROLE: bosun
+      HUBOT_BOSUN_SLACK: "yes"
+      HUBOT_BOSUN_LOG_LEVEL: debug
+      HUBOT_BOSUN_TIMEOUT: 10000
+      HUBOT_PINGDOM_USERNAME: test@test.test
+      HUBOT_PINGDOM_PASSWORD: password
+      HUBOT_PINGDOM_APP_KEY: app_key
+      HUBOT_SLACK_TOKEN: 'token'
+

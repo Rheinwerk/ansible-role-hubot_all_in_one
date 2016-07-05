@@ -1,0 +1,42 @@
+---
+- name: Create Hubot Data Directories
+  file: path={{ item }} state=directory owner=root group=root mode=0755
+  with_items:
+    - "{{ _hubot.data_directories.base }}"
+    - "{{ _hubot.data_directories.base }}/{{ _hubot.data_directories.data }}"
+    - "{{ _hubot.data_directories.base }}/{{ _hubot.data_directories.data_redis }}"
+    - "{{ _hubot.data_directories.base }}/{{ _hubot.data_directories.docker }}"
+
+- name: Create Hubot Upstart File
+  template: src=etc/init/hubot.conf.j2 dest=/etc/init/{{ _hubot.instance }}.conf owner=root group=root mode=0755
+
+- name: Enable Hubot
+  service: name=hubot enabled=yes
+
+- name: Create Docker Compose File
+  template: src=docker-compose.yml.j2 dest={{ _hubot.data_directories.base }}/{{ _hubot.data_directories.docker }}/docker-compose.yml owner=root group=root mode=0644
+
+- name: Pull Images
+  command: docker-compose pull
+  args:
+    chdir: "{{ _hubot.data_directories.base }}/{{ _hubot.data_directories.docker }}"
+  when: "{{ RW_ENABLE_DOWNLOADS is defined }}"
+
+# While https://github.com/docker/compose/issues/2908 is unsolved, we can make this sane
+##- name: Create Containers
+##  command: docker-compose create
+##  args:
+##    chdir: "{{ _hubot.data_directories.base }}/{{ _hubot.data_directories.docker }}"
+##
+##- name: (Re)-Start Hubot
+##  command: docker-compose restart
+##  args:
+##    chdir: "{{ _hubot.data_directories.base }}/{{ _hubot.data_directories.docker }}"
+##  when: "{{ _hubot.use_default_config }}"
+
+- name: Start Hubot
+  command: docker-compose up -d
+  args:
+    chdir: "{{ _hubot.data_directories.base }}/{{ _hubot.data_directories.docker }}"
+  when: "{{ _hubot.use_default_config }}"
+

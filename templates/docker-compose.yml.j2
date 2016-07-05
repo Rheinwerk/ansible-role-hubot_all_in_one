@@ -1,0 +1,19 @@
+version: '2'
+services:
+  redis:
+    image: redis:alpine
+    command: redis-server --appendonly yes --protected-mode no
+    volumes:
+      - {{ _hubot.data_directories.base }}/{{ _hubot.data_directories.data_redis }}:/data:rw
+  hubot:
+    image: rheinwerk/hubot:{{ _hubot.version }}
+    environment:
+{% for key, value in _hubot.hubot.env.iteritems() %}
+      {{ key }}: "{{ value }}"
+{% endfor %}
+      REDIS_URL: 'tcp://redis:6379'
+    depends_on:
+      - redis
+    links:
+      - redis:redis
+
