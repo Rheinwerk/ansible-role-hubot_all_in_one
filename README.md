@@ -4,7 +4,7 @@ Hubot
 This role installs a self sufficient Hubot instance including Redis
 using Docker Containers.
 
-[![Build Status](https://travis-ci.org/Rheinwerk/ansible-role-hubot_all_in_one.svg?branch=master)](https://travis-ci.org/Rheinwerk/ansible-role-hubot_all_in_one)
+[![Build Status](https://github.com/Rheinwerk/ansible-role-hubot_all_in_one/actions/workflows/ci.yml/badge.svg)](https://github.com/Rheinwerk/ansible-role-hubot_all_in_one/actions/workflows/ci.yml)
 
 Requirements
 ------------
